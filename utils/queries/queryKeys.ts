@@ -1,3 +1,4 @@
 export const QUERY_KEYS = {
-  MOVIE_LIST: ["getMovies"],
+  MOVIES: ["getMovies"],
+  MOVIES_INFINITE: ["getMovies", "infinite"],
 };

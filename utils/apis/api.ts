@@ -20,3 +20,16 @@ export const getMovies = async (page: number, size: number) => {
 
   return { result: data, nextPage, isLast: !nextPage };
 };
+
+export const _getMovies = async (page: number, size: number) => {
+  const { data } = await axios({
+    method: "get",
+    url: `${TMBD_API_URL}/movie/popular`,
+    params: {
+      api_key: TMBD_API_KEY,
+      page,
+    },
+  });
+
+  return data;
+};

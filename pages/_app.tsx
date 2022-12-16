@@ -27,8 +27,8 @@ function MyApp({ Component, pageProps }: AppProps) {
     defaultOptions: {
       queries: {
         retry: 0,
-        cacheTime: 1000 * 5,
         staleTime: 1000 * 2,
+        cacheTime: 1000 * 60 * 1,
         useErrorBoundary: true,
       },
     },

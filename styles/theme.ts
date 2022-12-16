@@ -18,12 +18,14 @@ const lightColors = {
   background_color: "#ffffff",
   primary_color: "#EBD671",
   secondary_color: "#E5EFC1",
+  background_sub_color: "#2c3744",
   nav_color: "rgba(200, 200, 200, 0.8)",
 };
 
 const darkColors = {
   text_color: "#ffffff",
   background_color: "#222831",
+  background_sub_color: "#2c3744",
   primary_color: "#6FB2D2",
   secondary_color: "#EEEEEE",
   nav_color: "rgba(10, 10, 10, 0.8)",

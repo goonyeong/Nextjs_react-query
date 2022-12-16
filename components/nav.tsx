@@ -23,6 +23,14 @@ const Nav = () => {
         >
           Table
         </Content>
+        <Content
+          onClick={() => {
+            push("/infinite-table");
+          }}
+          isFocus={pathname === "/infinite-table"}
+        >
+          Infinite-Table
+        </Content>
       </Lists>
     </Wrapper>
   );
