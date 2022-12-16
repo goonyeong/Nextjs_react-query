@@ -81,10 +81,18 @@ const columnData = [
   {
     Header: "Title",
     accessor: "original_title",
+    Cell: ({ cell }: { cell: any }) => (
+      <>{cell.value.includes("Black") ? "blacccccccckkkkkkkkkkkkkkkkk" : cell.value}</>
+    ),
   },
   {
     Header: "Adult",
     accessor: "adult",
+    Cell: ({ cell }: { cell: any }) => (
+      <Customfunc_Title isTrue={cell.value === true}>
+        {cell.value ? "adult" : "not adult"}
+      </Customfunc_Title>
+    ),
   },
   {
     Header: "Release",
@@ -99,22 +107,6 @@ const tableConfig: ITableConfig = {
   fontSize: "1.7rem",
   minWidth: "1000px",
   tableHeight: "100%",
-  customFormat: [
-    {
-      key: "adult",
-      formatFunc: (cell: any) => (
-        <Customfunc_Title isTrue={cell.value === true}>
-          {cell.value ? "adult" : "not adult"}
-        </Customfunc_Title>
-      ),
-    },
-    {
-      key: "original_title",
-      formatFunc: (cell: any) => (
-        <>{cell.value.includes("Black") ? "blacccccccckkkkkkkkkkkkkkkkk" : cell.value}</>
-      ),
-    },
-  ],
 };
 
 const Customfunc_Title = styled.div<{ isTrue: boolean }>`

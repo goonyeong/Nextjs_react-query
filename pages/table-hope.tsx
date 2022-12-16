@@ -1,64 +1,74 @@
-import { useEffect, useMemo } from "react";
 import styled from "styled-components";
-import { useTable, usePagination } from "react-table";
-import { useInView } from "react-intersection-observer";
+import {
+  PaginationState,
+  useReactTable,
+  getCoreRowModel,
+  ColumnDef,
+  flexRender,
+} from "@tanstack/react-table";
+import { useMemo, useState } from "react";
+import { useFetchMovies } from "utils/queries/queries";
 
-export interface ITableConfig {
-  columnLabel: { Header: string; accessor: string }[];
-  columnCellWidth: number[];
-  cellHeight?: string;
-  fontSize?: string;
-  minWidth?: string;
-  tableHeight?: string;
-  infiniteScroll?: boolean;
-  fetchInfiniteScroll?: () => void;
-}
-
-interface ITableProps {
-  tableData: any[];
-  tableConfig: ITableConfig;
-}
-
-export const getOtherCellValue = (cell: any, key: string) => {
-  return cell.row.original[key];
-};
-
-export const Table = ({
-  tableData,
-  tableConfig: {
-    columnLabel,
-    columnCellWidth,
-    cellHeight,
-    fontSize,
-    minWidth,
-    infiniteScroll,
-    fetchInfiniteScroll,
-    tableHeight,
+const columnLabel = [
+  {
+    header: "Path",
+    accessorKey: "poster_path",
   },
-}: ITableProps) => {
-  const [ref, inView] = useInView();
-  const columns = useMemo(() => columnLabel, []);
-  const data = useMemo(() => tableData, []);
+  {
+    header: "Title",
+    accessorKey: "original_title",
+  },
+  {
+    header: "Adult",
+    accessorKey: "adult",
+  },
+  {
+    header: "Release",
+    accessorKey: "release_date",
+  },
+];
 
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({
-    // @ts-ignore
-    columns,
-    data,
+const cellHeight = "50px";
+const fontSize = "1.7rem";
+const minWidth = "1000px";
+const tableHeight = "100%";
+
+const TableHope = () => {
+  const columns = useMemo(() => columnLabel, []);
+
+  const [{ page, size }, setPagination] = useState({
+    page: 0,
+    size: 10,
   });
 
-  const GRID_COLUMN = `${columnCellWidth.map((num) => ` ${num}fr`)}`.split(",").join("");
+  const fetchDataOptions = {
+    page,
+    size,
+  };
 
-  useEffect(() => {
-    if (inView && infiniteScroll && fetchInfiniteScroll) {
-      fetchInfiniteScroll();
-    }
-  }, [inView]);
+  const { data: movieData } = useFetchMovies(fetchDataOptions);
+
+  const defaultData = useMemo(() => [], []);
+
+  const table = useReactTable({
+    data: movieData ?? defaultData,
+    columns,
+    pageCount: dataQuery.data?.pageCount ?? -1,
+    state: {
+      pagination,
+    },
+    onPaginationChange: setPagination,
+    getCoreRowModel: getCoreRowModel(),
+    manualPagination: true,
+    // getPaginationRowModel: getPaginationRowModel(), // If only doing manual pagination, you don't need this
+    debugTable: true,
+  });
 
   return (
     <Table_Wrapper tableHeight={tableHeight}>
       <Table_Tag
         {...getTableProps}
-        gridColumn={GRID_COLUMN}
+        gridColumn={[1, 2, 1, 1]}
         cellHeight={cellHeight}
         minWidth={minWidth}
         fontSize={fontSize}
@@ -91,6 +101,8 @@ export const Table = ({
     </Table_Wrapper>
   );
 };
+
+export default TableHope;
 
 const Table_Wrapper = styled.div<{
   tableHeight?: string;

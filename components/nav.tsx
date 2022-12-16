@@ -31,6 +31,22 @@ const Nav = () => {
         >
           Infinite-Table
         </Content>
+        <Content
+          onClick={() => {
+            push("/table-hope");
+          }}
+          isFocus={pathname === "/table-hope"}
+        >
+          Table-hope
+        </Content>
+        <Content
+          onClick={() => {
+            push("/images");
+          }}
+          isFocus={pathname === "/images"}
+        >
+          Images
+        </Content>
       </Lists>
     </Wrapper>
   );
