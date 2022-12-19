@@ -14,6 +14,7 @@ interface IMovieDetail {
   overview: string;
   release_date: string;
   adult: boolean;
+  vote_average: number;
 }
 
 // Props

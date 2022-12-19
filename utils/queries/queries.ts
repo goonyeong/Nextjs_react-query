@@ -5,23 +5,14 @@ import {
   UseQueryResult,
 } from "@tanstack/react-query";
 import { QUERY_KEYS } from "utils/queries/queryKeys";
-import { getMovies, _getMovies } from "utils/apis/api";
+import { getMovies, getInfiniteMovies } from "utils/apis/api";
 import { AxiosError } from "axios";
 
-interface IInfiniteFetchReturn<T> {
+export interface IInfiniteFetchReturn<T> {
   result: { page: number; results: T; total_pages: number; total_results: number };
   nextPage: number;
   isLast: boolean;
 }
-
-export const useInfiniteFetchMovies = ({
-  size,
-}: {
-  size: number;
-}): UseInfiniteQueryResult<IInfiniteFetchReturn<IMovieDetail[]>, AxiosError> =>
-  useInfiniteQuery(QUERY_KEYS.MOVIES_INFINITE, ({ pageParam = 1 }) => getMovies(pageParam, size), {
-    getNextPageParam: (lastPage) => lastPage.nextPage,
-  });
 
 export const useFetchMovies = ({
   size,
@@ -29,8 +20,21 @@ export const useFetchMovies = ({
 }: {
   page: number;
   size: number;
-}): UseQueryResult<{ results: IMovieDetail[] }, AxiosError> =>
-  useQuery([...QUERY_KEYS.MOVIES, page], () => _getMovies(page, size), {
+}): UseQueryResult<{ results: IMovieDetail[]; page: number; total_pages: number }, AxiosError> =>
+  useQuery([...QUERY_KEYS.MOVIES, page], () => getMovies(page, size), {
     keepPreviousData: true,
-    staleTime: 0,
   });
+
+export const useInfiniteFetchMovies = ({
+  size,
+}: {
+  size: number;
+}): UseInfiniteQueryResult<IInfiniteFetchReturn<IMovieDetail[]>, AxiosError> =>
+  useInfiniteQuery(
+    QUERY_KEYS.MOVIES_INFINITE,
+    ({ pageParam = 1 }) => getInfiniteMovies(pageParam, size),
+    {
+      getNextPageParam: (lastPage) => lastPage.nextPage,
+      keepPreviousData: true,
+    }
+  );

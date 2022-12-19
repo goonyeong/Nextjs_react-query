@@ -11,25 +11,25 @@ export const getMovies = async (page: number, size: number) => {
     params: {
       api_key: TMBD_API_KEY,
       page,
-      // size // page size 화면 크기에 따라서 사이즈 다르게 / 추후 추가
     },
   });
 
-  const MOVIES_LENGTH = 10;
-  const nextPage = MOVIES_LENGTH < page + 1 ? undefined : page + 1;
-
-  return { result: data, nextPage, isLast: !nextPage };
+  return data;
 };
 
-export const _getMovies = async (page: number, size: number) => {
+export const getInfiniteMovies = async (page: number, size: number) => {
   const { data } = await axios({
     method: "get",
     url: `${TMBD_API_URL}/movie/popular`,
     params: {
       api_key: TMBD_API_KEY,
       page,
+      // size // page size 화면 크기에 따라서 사이즈 다르게 / 추후 추가
     },
   });
 
-  return data;
+  const TOTAL_PAGES = 500;
+  const nextPage = TOTAL_PAGES < page + 1 ? undefined : page + 1;
+
+  return { result: data, nextPage, isLast: !nextPage };
 };

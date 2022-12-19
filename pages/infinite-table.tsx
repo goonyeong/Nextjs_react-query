@@ -1,46 +1,77 @@
-import { useFetchMovies, useInfiniteFetchMovies } from "utils/queries/queries";
+import { useInfiniteFetchMovies } from "utils/queries/queries";
 import styled from "styled-components";
-import { TMBD_IMAGE_URL } from "utils/apis/api";
 import { useEffect, useState } from "react";
-import { Table, ITableConfig } from "components/table/table";
-import Pagination from "components/table/pagination";
-import { useInView } from "react-intersection-observer";
+import {
+  Table,
+  ITableConfig,
+  ITableCell,
+  IColumnData,
+  getOtherCellValue,
+  getInfiniteQueriesDataArray,
+} from "components/table/table";
 
 const InfiniteTable = () => {
-  const {
-    data: movieData,
-    fetchNextPage,
-    hasNextPage,
-    isFetching,
-  } = useInfiniteFetchMovies({ size: 10 });
+  const { data: movieData, fetchNextPage, hasNextPage } = useInfiniteFetchMovies({ size: 10 });
+  const [infiniteMovieArr, setInfiniteMovieArr] = useState<IMovieDetail[]>([]);
 
   useEffect(() => {
     console.log("movies", movieData);
+    setInfiniteMovieArr(getInfiniteQueriesDataArray(movieData));
   }, [movieData]);
 
-  const movies: IMovieDetail[] = [];
-
-  movieData?.pages.map((page) => {
-    page.result.results.map((movie) => {
-      console.log("mmmm", movie);
-      movies.push(movie);
-    });
-  });
-
-  console.log("moviessssss", movies);
+  const columRatio = [1, 2, 1, 1, 1];
+  const columnData: IColumnData[] = [
+    {
+      header: "Tier",
+      accessorKey: "",
+      cell: ({ cell }: { cell: ITableCell }) => {
+        const rate = getOtherCellValue(cell, "vote_average");
+        return <>{rate > 7 ? "good" : "not good"}</>;
+      },
+    },
+    {
+      header: "Title",
+      accessorKey: "original_title",
+      cell: ({ cell }: { cell: ITableCell }) => {
+        return (
+          <>
+            {cell.getValue().includes("Black") ? "blacccccccckkkkkkkkkkkkkkkkk" : cell.getValue()}
+          </>
+        );
+      },
+    },
+    {
+      header: "Adult",
+      accessorKey: "adult",
+      cell: ({ cell }: { cell: ITableCell }) => (
+        <Customfunc_Title isTrue={cell.getValue() === true}>
+          {cell.getValue() ? "adult" : "not adult"}
+        </Customfunc_Title>
+      ),
+    },
+    {
+      header: "Release",
+      accessorKey: "release_date",
+    },
+    {
+      header: "Score",
+      accessorKey: "vote_average",
+      cell: ({ cell }: { cell: ITableCell }) => {
+        return cell.getValue();
+      },
+    },
+  ];
 
   const tableConfig: ITableConfig = {
-    columnLabel: columnData,
+    columnData: columnData,
     columnCellWidth: columRatio,
     cellHeight: "50px",
     fontSize: "1.7rem",
     minWidth: "1000px",
     tableHeight: "100%",
     infiniteScroll: true,
-    fetchInfiniteScroll: () => {
-      if (hasNextPage) {
-        fetchNextPage();
-      }
+    handleInfiniteFetch: () => {
+      if (hasNextPage) fetchNextPage();
     },
   };
 
@@ -49,7 +80,7 @@ const InfiniteTable = () => {
       <Table_Wrapper>
         <Table_Title>Movie Table</Table_Title>
         <Table_Container>
-          {movies && <Table tableData={movies} tableConfig={tableConfig} />}
+          <Table tableData={infiniteMovieArr} tableConfig={tableConfig} />
         </Table_Container>
       </Table_Wrapper>
     </Wrapper>
@@ -70,7 +101,6 @@ const Table_Wrapper = styled.article`
   border-radius: 2rem;
   display: grid;
   grid-template-rows: 100px 1fr 100px;
-  position: relative;
 `;
 
 const Table_Title = styled.h3`
@@ -87,35 +117,6 @@ const Table_Container = styled.div`
   height: 100%;
   overflow: hidden;
 `;
-
-const columRatio = [1, 2, 1, 1];
-
-const columnData = [
-  {
-    Header: "Path",
-    accessor: "poster_path",
-  },
-  {
-    Header: "Title",
-    accessor: "original_title",
-    Cell: ({ cell }: { cell: any }) => (
-      <>{cell.value.includes("Black") ? "blacccccccckkkkkkkkkkkkkkkkk" : cell.value}</>
-    ),
-  },
-  {
-    Header: "Adult",
-    accessor: "adult",
-    Cell: ({ cell }: { cell: any }) => (
-      <Customfunc_Title isTrue={cell.value === true}>
-        {cell.value ? "adult" : "not adult"}
-      </Customfunc_Title>
-    ),
-  },
-  {
-    Header: "Release",
-    accessor: "release_date",
-  },
-];
 
 const Customfunc_Title = styled.div<{ isTrue: boolean }>`
   width: 100%;

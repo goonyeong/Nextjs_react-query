@@ -1,91 +1,125 @@
-import { useEffect, useMemo } from "react";
 import styled from "styled-components";
-import { useTable, usePagination } from "react-table";
+import { useReactTable, getCoreRowModel, flexRender } from "@tanstack/react-table";
+import { useEffect, useMemo, useState } from "react";
 import { useInView } from "react-intersection-observer";
+import { IInfiniteFetchReturn } from "utils/queries/queries";
+
+export interface ITableCell {
+  getValue: () => any;
+  row: {
+    original: any;
+  };
+}
+
+export interface IColumnData {
+  header: string;
+  accessorKey: string;
+  cell?: ({ cell }: { cell: ITableCell }) => any;
+}
 
 export interface ITableConfig {
-  columnLabel: { Header: string; accessor: string }[];
+  columnData: IColumnData[];
   columnCellWidth: number[];
   cellHeight?: string;
   fontSize?: string;
   minWidth?: string;
   tableHeight?: string;
   infiniteScroll?: boolean;
-  fetchInfiniteScroll?: () => void;
+  handleInfiniteFetch?: () => void;
 }
 
 interface ITableProps {
-  tableData: any[];
+  tableData: any[] | undefined;
   tableConfig: ITableConfig;
 }
 
-export const getOtherCellValue = (cell: any, key: string) => {
+export const getOtherCellValue = (cell: ITableCell, key: string) => {
   return cell.row.original[key];
+};
+
+export const getInfiniteQueriesDataArray = (
+  data: { pages: IInfiniteFetchReturn<any[]>[] } | undefined
+) => {
+  const dataArray: any[] = [];
+  data?.pages.map((page) => {
+    dataArray.push(...page.result.results);
+  });
+
+  return dataArray;
 };
 
 export const Table = ({
   tableData,
   tableConfig: {
-    columnLabel,
+    columnData,
     columnCellWidth,
     cellHeight,
     fontSize,
     minWidth,
-    infiniteScroll,
-    fetchInfiniteScroll,
     tableHeight,
+    infiniteScroll,
+    handleInfiniteFetch,
   },
 }: ITableProps) => {
+  const columns = useMemo(() => columnData, []);
+  const defaultData = useMemo(() => [], []);
+  const gridColumn = useMemo(
+    () => `${columnCellWidth.map((num) => ` ${num}fr`)}`.split(",").join(""),
+    []
+  );
+
   const [ref, inView] = useInView();
-  const columns = useMemo(() => columnLabel, []);
-  const data = useMemo(() => tableData, []);
-
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({
-    // @ts-ignore
-    columns,
-    data,
-  });
-
-  const GRID_COLUMN = `${columnCellWidth.map((num) => ` ${num}fr`)}`.split(",").join("");
 
   useEffect(() => {
-    if (inView && infiniteScroll && fetchInfiniteScroll) {
-      fetchInfiniteScroll();
+    if (!tableData) return;
+
+    if (handleInfiniteFetch && inView) {
+      handleInfiniteFetch();
     }
   }, [inView]);
+
+  const table = useReactTable({
+    data: tableData ?? defaultData,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+    manualPagination: true,
+    debugTable: true,
+  });
 
   return (
     <Table_Wrapper tableHeight={tableHeight}>
       <Table_Tag
-        {...getTableProps}
-        gridColumn={GRID_COLUMN}
+        gridColumn={gridColumn}
         cellHeight={cellHeight}
         minWidth={minWidth}
         fontSize={fontSize}
       >
         <Table_Head>
-          {headerGroups.map((headerGroup) => (
-            <Head_Row {...headerGroup.getHeaderGroupProps()} key={Math.random()} className="rows">
-              {headerGroup.headers.map((col) => (
-                <Head_Cell {...col.getHeaderProps()} key={Math.random()}>
-                  {col.render("Header")}
+          {table.getHeaderGroups().map((headerGroup) => (
+            <Head_Row key={headerGroup.id} className="rows">
+              {headerGroup.headers.map((header) => (
+                <Head_Cell key={header.id} colSpan={header.colSpan} className="cells">
+                  {header.isPlaceholder ? null : (
+                    <>{flexRender(header.column.columnDef.header, header.getContext())}</>
+                  )}
                 </Head_Cell>
               ))}
             </Head_Row>
           ))}
         </Table_Head>
-        <Table_Body {...getTableBodyProps}>
-          {rows.map((row) => {
-            prepareRow(row);
-            return (
-              <Body_Row {...row.getRowProps()} key={Math.random()} className="rows">
-                {row.cells.map((cell) => {
-                  return <Body_Cell key={Math.random()}>{cell.render("Cell")}</Body_Cell>;
-                })}
+        <Table_Body>
+          <>
+            {table.getRowModel().rows.map((row) => (
+              <Body_Row key={row.id} className="rows">
+                {row.getVisibleCells().map((cell) => (
+                  <Body_Cell key={cell.id} className="cells">
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </Body_Cell>
+                ))}
               </Body_Row>
-            );
-          })}
-          <Inview_Tag ref={ref} />
+            ))}
+            {infiniteScroll && <Inview_Tag ref={ref} />}
+          </>
         </Table_Body>
       </Table_Tag>
     </Table_Wrapper>
@@ -118,8 +152,7 @@ const Table_Tag = styled.table<{
     min-width: ${(props) => (props.minWidth ? props.minWidth : "1500px")};
     height: ${(props) => (props.cellHeight ? props.cellHeight : "30px")};
   }
-  td,
-  th {
+  .cells {
     ${({ theme }) => theme.mixin.flexCenter};
     overflow: hidden;
     font-size: ${(props) => (props.fontSize ? props.fontSize : "40px")};
