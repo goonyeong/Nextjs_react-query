@@ -1,19 +1,24 @@
-# React query examples
+# Next JS & React-Query
 
-### 1) Install modules
+## Versions
 
-> npm install
+- <strong>Node</strong> v18.12.1
+- <strong>Yarn</strong> v1.22.19
+- <strong>Next js</strong> v12.2.3
+- <strong>React js</strong> v18.2.0
+- <strong>React-query</strong> v4.10.1
 
-### 2) Run dev server (port number 3000)
+## Run Dev Server
 
-> npm run dev
+> yarn install
+> yarn run dev
 
-## Build
+## Run Prod Server
 
-### 1) Build project
+> yarn install
+> yarn start
 
-> npm run build
+## Contents
 
-### 2) Run server with build output
-
-> npm start
+- useQuery
+- useInfiniteQuery
