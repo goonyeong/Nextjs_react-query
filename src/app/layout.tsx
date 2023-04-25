@@ -1,8 +1,9 @@
-import { Header } from "@/components/header";
-import { ReactQueryProvider } from "@/components/reactQueryProvider";
+import { Header } from "@/app/common/header";
+import { ReactQueryProvider } from "@/app/common/reactQueryProvider";
 import StyledComponentsRegistry from "@/lib/styledComponentRegistry";
+import { ILayoutProps } from "@/types/interfaceNext";
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({ children }: ILayoutProps) {
   return (
     <html lang="en">
       <body>
