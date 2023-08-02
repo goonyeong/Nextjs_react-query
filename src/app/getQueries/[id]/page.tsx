@@ -1,10 +1,8 @@
 "use client";
-
-import { TMBD_API_KEY } from "@/config";
-import { useCustomQuery } from "@/hooks/useCustomQuery";
+import { useCustomQuery } from "@/query/useCustomQuery";
+import { getPersonDetail } from "@/services/api";
 import { IPersonData } from "@/types/interfaceData";
-import { QK_Person_Detail } from "@/types/queryKey";
-import { useQueryClient } from "@tanstack/react-query";
+import { QK_Person_Detail } from "@/query/queryKey";
 import styled from "styled-components";
 
 interface IPageProps {
@@ -14,20 +12,9 @@ interface IPageProps {
 }
 
 const Page = ({ params: { id } }: IPageProps) => {
-  const queryClient = useQueryClient();
-
   const { data } = useCustomQuery<IPersonData>({
     queryKey: [...QK_Person_Detail, id.toString()],
-    path: `/person/${id}`,
-    accessToken: "",
-    params: {
-      api_key: TMBD_API_KEY,
-    },
-    options: {
-      onSuccess: (res) => {
-        console.log("res", res);
-      },
-    },
+    queryFn: () => getPersonDetail({ id: id }),
   });
 
   return (

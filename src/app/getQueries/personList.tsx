@@ -1,7 +1,9 @@
-import { TMBD_API_KEY } from "@/config";
-import { useCustomQueries } from "@/hooks/useCustomQueries";
+"use client";
+
+import { useCustomQueries } from "@/query/useCustomQuery";
+import { getPersonDetail } from "@/services/api";
 import { IPersonData } from "@/types/interfaceData";
-import { QK_Person_Detail } from "@/types/queryKey";
+import { QK_Person_Detail } from "@/query/queryKey";
 import { useRouter } from "next/navigation";
 import styled from "styled-components";
 
@@ -15,11 +17,7 @@ export const PersonList = () => {
     queries: PERSON_ID.map((person) => {
       return {
         queryKey: [...QK_Person_Detail, person.toString()],
-        path: `/person/${person}`,
-        accessToken: "",
-        params: {
-          api_key: TMBD_API_KEY,
-        },
+        queryFn: () => getPersonDetail({ id: person }),
       };
     }),
   });

@@ -1,5 +1,5 @@
 import { Header } from "@/app/common/header";
-import { ReactQueryProvider } from "@/app/common/reactQueryProvider";
+import { ReactQueryProvider } from "@/query/reactQueryProvider";
 import StyledComponentsRegistry from "@/lib/styledComponentRegistry";
 import { ILayoutProps } from "@/types/interfaceNext";
 
