@@ -2,9 +2,9 @@
 
 ## Versions
 
-- <strong>Node</strong> v18.12.1
+- <strong>Node</strong> v18.17.0
 - <strong>Yarn</strong> v1.22.19
-- <strong>Next js</strong> v13.3.0
+- <strong>Next js</strong> v13.4.12
 - <strong>React js</strong> v18.2.0
 - <strong>React-query</strong> v4.29.3
 
