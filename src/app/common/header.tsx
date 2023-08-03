@@ -1,10 +1,24 @@
 "use client";
 
+import { useUserStore } from "@/store/useUserStore";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import styled from "styled-components";
 
 export const Header = () => {
   const { push } = useRouter();
+  // const [name, mbti, todo, setName, setMbti, addTodo] = useUserStore((state) => [
+  //   state.name,
+  //   state.mbti,
+  //   state.todo,
+  //   state.setName,
+  //   state.setMbti,
+  //   state.addTodo,
+  // ]);
+  const { name, mbti, todo, setName, setMbti, addTodo } = useUserStore((state) => state);
+
+  const [todoKey, setTodoKey] = useState("");
+  const [todoName, setTodoName] = useState("");
 
   return (
     <Wrapper>
@@ -24,6 +38,39 @@ export const Header = () => {
       >
         useCustomQueries
       </div>
+      <div className="items">
+        <input type="text" value={name} onChange={(e) => setName(e.currentTarget.value)} />
+        name:: {name}
+      </div>
+      <div className="items">
+        <input type="text" value={mbti.name} onChange={(e) => setMbti(e.currentTarget.value)} />
+        mbti:: {mbti.name}
+      </div>
+      <div className="items">
+        <input
+          type="text"
+          value={todoKey}
+          onChange={(e) => setTodoKey(e.currentTarget.value)}
+          placeholder="todo Key"
+        />
+        <input
+          type="text"
+          value={todoName}
+          onChange={(e) => setTodoName(e.currentTarget.value)}
+          placeholder="todo Name"
+        />
+        <button
+          onClick={() => {
+            addTodo(todoKey, {
+              id: Math.random(),
+              name: todoName,
+            });
+          }}
+        >
+          add
+        </button>
+        todo:: {JSON.stringify(todo)}
+      </div>
     </Wrapper>
   );
 };
@@ -39,6 +86,9 @@ const Wrapper = styled.header`
   display: flex;
   align-items: center;
   gap: 20px;
+  .items {
+    color: green;
+  }
   .menu {
     height: 100%;
     padding: 0 10px;
