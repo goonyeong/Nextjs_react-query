@@ -7,6 +7,7 @@
 - <strong>Next js</strong> v13.4.12
 - <strong>React js</strong> v18.2.0
 - <strong>React-query</strong> v4.29.3
+- <strong>Zustand</strong> v4.4.0
 
 ## Run Dev Server
 
