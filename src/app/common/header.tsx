@@ -87,7 +87,7 @@ const Wrapper = styled.header`
   align-items: center;
   gap: 20px;
   .items {
-    color: green;
+    color: ${({ theme }) => theme.color.pink};
   }
   .menu {
     height: 100%;
