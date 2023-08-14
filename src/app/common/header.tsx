@@ -1,21 +1,23 @@
 "use client";
 
-import { useUserStore } from "@/store/useUserStore";
+import {
+  useUserName,
+  useUserAge,
+  useUserMbti,
+  useUserTodo,
+  useUserActions,
+} from "@/store/useUserStore";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import styled from "styled-components";
 
 export const Header = () => {
   const { push } = useRouter();
-  // const [name, mbti, todo, setName, setMbti, addTodo] = useUserStore((state) => [
-  //   state.name,
-  //   state.mbti,
-  //   state.todo,
-  //   state.setName,
-  //   state.setMbti,
-  //   state.addTodo,
-  // ]);
-  const { name, mbti, todo, setName, setMbti, addTodo } = useUserStore((state) => state);
+  const name = useUserName();
+  const age = useUserAge();
+  const mbti = useUserMbti();
+  const todo = useUserTodo();
+  const { setName, setMbti, addTodo } = useUserActions();
 
   const [todoKey, setTodoKey] = useState("");
   const [todoName, setTodoName] = useState("");
@@ -40,7 +42,7 @@ export const Header = () => {
       </div>
       <div className="items">
         <input type="text" value={name} onChange={(e) => setName(e.currentTarget.value)} />
-        name:: {name}
+        name:: {name} / {age}
       </div>
       <div className="items">
         <input type="text" value={mbti.name} onChange={(e) => setMbti(e.currentTarget.value)} />

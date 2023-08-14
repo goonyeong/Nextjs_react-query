@@ -21,14 +21,16 @@ type TState = {
   todo: Record<string, TTodo>;
 };
 
-type TAction = {
-  setName: (newName: TState["name"]) => void;
-  setMbti: (newMbti: TState["mbti"]["name"]) => void;
-  addTodo: (key: string, newTodo: TTodo) => void;
-};
+interface IAction {
+  actions: {
+    setName: (newName: TState["name"]) => void;
+    setMbti: (newMbti: TState["mbti"]["name"]) => void;
+    addTodo: (key: string, newTodo: TTodo) => void;
+  };
+}
 
-export const useUserStore = create(
-  immer<TState & TAction>((set) => ({
+const useUserStore = create(
+  immer<TState & IAction>((set) => ({
     name: "??",
     age: 0,
     mbti: {
@@ -41,17 +43,26 @@ export const useUserStore = create(
       },
     },
     todo: {},
-    setName: (newName: string) =>
-      set((state) => {
-        state.name = newName;
-      }),
-    setMbti: (newMbti: string) =>
-      set((state) => {
-        state.mbti.name = newMbti;
-      }),
-    addTodo: (key: string, newTodo: TTodo) =>
-      set((state) => {
-        state.todo[key] = newTodo;
-      }),
+    actions: {
+      setName: (newName: string) =>
+        set((state) => {
+          state.name = newName;
+        }),
+      setMbti: (newMbti: string) =>
+        set((state) => {
+          state.mbti.name = newMbti;
+        }),
+      addTodo: (key: string, newTodo: TTodo) =>
+        set((state) => {
+          state.todo[key] = newTodo;
+        }),
+    },
   }))
 );
+
+/** make atomic through seperating each state and actions group */
+export const useUserName = () => useUserStore((state) => state.name);
+export const useUserAge = () => useUserStore((state) => state.age);
+export const useUserMbti = () => useUserStore((state) => state.mbti);
+export const useUserTodo = () => useUserStore((state) => state.todo);
+export const useUserActions = () => useUserStore((state) => state.actions);
