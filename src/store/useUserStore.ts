@@ -1,5 +1,7 @@
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
+import { createJSONStorage, devtools, persist } from "zustand/middleware";
+import { produce } from "immer";
 
 type TTodo = {
   id: number;
@@ -29,35 +31,50 @@ interface IAction {
   };
 }
 
-const useUserStore = create(
-  immer<TState & IAction>((set) => ({
-    name: "??",
-    age: 0,
-    mbti: {
-      name: "ENFP",
-      attributes: {
-        1: "E",
-        2: "N",
-        3: "F",
-        4: "P",
-      },
-    },
-    todo: {},
-    actions: {
-      setName: (newName: string) =>
-        set((state) => {
-          state.name = newName;
-        }),
-      setMbti: (newMbti: string) =>
-        set((state) => {
-          state.mbti.name = newMbti;
-        }),
-      addTodo: (key: string, newTodo: TTodo) =>
-        set((state) => {
-          state.todo[key] = newTodo;
-        }),
-    },
-  }))
+const useUserStore = create<TState & IAction>()(
+  devtools(
+    persist(
+      (set) => ({
+        name: "??",
+        age: 0,
+        mbti: {
+          name: "ENFP",
+          attributes: {
+            1: "E",
+            2: "N",
+            3: "F",
+            4: "P",
+          },
+        },
+        todo: {},
+        actions: {
+          setName: (newName: string) =>
+            set(
+              produce((state) => {
+                state.name = newName;
+              })
+            ),
+          setMbti: (newMbti: string) =>
+            set(
+              produce((state) => {
+                state.mbti.name = newMbti;
+              })
+            ),
+          addTodo: (key: string, newTodo: TTodo) =>
+            set(
+              produce((state) => {
+                state.todo[key] = newTodo;
+              })
+            ),
+        },
+      }),
+      {
+        name: "zustand-storage",
+        storage: createJSONStorage(() => localStorage),
+      }
+    )
+  )
+  // )
 );
 
 /** make atomic through seperating each state and actions group */
