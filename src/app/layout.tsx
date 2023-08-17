@@ -3,7 +3,7 @@ import { ReactQueryProvider } from "@/query/reactQueryProvider";
 import StyledComponentsRegistry from "@/lib/styledComponentRegistry";
 import { ILayoutProps } from "@/types/interfaceNext";
 import { StyledThemeProvider } from "@/lib/styledThemeProvider";
-import "../style/global.css";
+import { GlobalStyles } from "@/style/globalStyles";
 
 export default function RootLayout({ children }: ILayoutProps) {
   return (
@@ -12,6 +12,7 @@ export default function RootLayout({ children }: ILayoutProps) {
         <StyledComponentsRegistry>
           <StyledThemeProvider>
             <ReactQueryProvider>
+              <GlobalStyles />
               <Header />
               {children}
             </ReactQueryProvider>
