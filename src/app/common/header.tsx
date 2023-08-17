@@ -5,7 +5,10 @@ import {
   useUserAge,
   useUserMbti,
   useUserTodo,
-  useUserActions,
+  useUserSetName,
+  useUserSetMbti,
+  useUserAddTodo,
+  useUserStore,
 } from "@/store/useUserStore";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -17,7 +20,9 @@ export const Header = () => {
   const age = useUserAge();
   const mbti = useUserMbti();
   const todo = useUserTodo();
-  const { setName, setMbti, addTodo } = useUserActions();
+  const setName = useUserSetName();
+  const setMbti = useUserSetMbti();
+  const addTodo = useUserAddTodo();
 
   const [todoKey, setTodoKey] = useState("");
   const [todoName, setTodoName] = useState("");
@@ -41,8 +46,14 @@ export const Header = () => {
         useCustomQueries
       </div>
       <div className="items">
-        <input type="text" value={name} onChange={(e) => setName(e.currentTarget.value)} />
-        name:: {name} / {age}
+        <input
+          type="text"
+          value={name}
+          onChange={(e) => {
+            if (e.currentTarget.value) setName(e.currentTarget.value);
+          }}
+        />
+        name:: {name} /
       </div>
       <div className="items">
         <input type="text" value={mbti.name} onChange={(e) => setMbti(e.currentTarget.value)} />
@@ -78,7 +89,7 @@ export const Header = () => {
 };
 
 const Wrapper = styled.header`
-  height: 20px;
+  height: 50px;
   width: 100vw;
   position: sticky;
   top: 0;

@@ -3,6 +3,7 @@ import { ReactQueryProvider } from "@/query/reactQueryProvider";
 import StyledComponentsRegistry from "@/lib/styledComponentRegistry";
 import { ILayoutProps } from "@/types/interfaceNext";
 import { StyledThemeProvider } from "@/lib/styledThemeProvider";
+import "../style/global.css";
 
 export default function RootLayout({ children }: ILayoutProps) {
   return (
