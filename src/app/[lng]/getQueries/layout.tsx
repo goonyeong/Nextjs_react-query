@@ -3,11 +3,22 @@
 import styled from "styled-components";
 import { PersonList } from "./personList";
 import { ILayoutProps } from "@/types/interfaceNext";
+import { languages } from "@/app/i18n/settings";
 
-const PersonsLayout = ({ children }: ILayoutProps) => {
+export async function generateStaticParams() {
+  return languages.map((lng) => ({ lng }));
+}
+
+interface IProps extends ILayoutProps {
+  params: {
+    lng: string;
+  };
+}
+
+const PersonsLayout = ({ children, params: { lng } }: IProps) => {
   return (
     <Main>
-      <PersonList />
+      <PersonList lng={lng} />
       {children}
     </Main>
   );

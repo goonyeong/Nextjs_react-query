@@ -8,16 +8,22 @@ import {
   useUserSetName,
   useUserSetMbti,
   useUserAddTodo,
-  useUserStore,
 } from "@/store/useUserStore";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import styled from "styled-components";
+import { useTranslation } from "../i18n/client";
 
-export const Header = () => {
+interface IProps {
+  lng: string;
+}
+
+export const Header = ({ lng }: IProps) => {
+  /** server page useTranslation */
+  const { t } = useTranslation(lng, ["common"]);
+
   const { push } = useRouter();
   const name = useUserName();
-  const age = useUserAge();
   const mbti = useUserMbti();
   const todo = useUserTodo();
   const setName = useUserSetName();
@@ -32,18 +38,18 @@ export const Header = () => {
       <div
         className="menu"
         onClick={() => {
-          push("/");
+          push(`/${lng}`);
         }}
       >
-        useCustomQuery
+        {t("menu1")}
       </div>
       <div
         className="menu"
         onClick={() => {
-          push("/getQueries");
+          push(`/${lng}/getQueries`);
         }}
       >
-        useCustomQueries
+        {t("menu2")}
       </div>
       <div className="items">
         <input

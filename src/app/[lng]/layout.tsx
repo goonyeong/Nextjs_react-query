@@ -4,16 +4,28 @@ import StyledComponentsRegistry from "@/lib/styledComponentRegistry";
 import { ILayoutProps } from "@/types/interfaceNext";
 import { StyledThemeProvider } from "@/lib/styledThemeProvider";
 import { GlobalStyles } from "@/style/globalStyles";
+import { dir } from "i18next";
+import { languages } from "../i18n/settings";
 
-export default function RootLayout({ children }: ILayoutProps) {
+export async function generateStaticParams() {
+  return languages.map((lng) => ({ lng }));
+}
+
+interface IProps extends ILayoutProps {
+  params: {
+    lng: string;
+  };
+}
+
+export default function RootLayout({ children, params: { lng } }: IProps) {
   return (
-    <html lang="en">
+    <html lang={lng} dir={dir(lng)}>
       <body>
         <StyledComponentsRegistry>
           <StyledThemeProvider>
             <ReactQueryProvider>
               <GlobalStyles />
-              <Header />
+              <Header lng={lng} />
               {children}
             </ReactQueryProvider>
           </StyledThemeProvider>
