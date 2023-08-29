@@ -5,30 +5,26 @@ import {
   useUserAge,
   useUserMbti,
   useUserTodo,
-  useUserSetName,
-  useUserSetMbti,
-  useUserAddTodo,
+  useUserAction,
 } from "@/store/useUserStore";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import styled from "styled-components";
 import { useTranslation } from "../i18n/client";
+import { TLng } from "@/types/constants";
 
 interface IProps {
-  lng: string;
+  lng: TLng;
 }
 
 export const Header = ({ lng }: IProps) => {
-  /** server page useTranslation */
   const { t } = useTranslation(lng, ["common"]);
 
   const { push } = useRouter();
   const name = useUserName();
   const mbti = useUserMbti();
   const todo = useUserTodo();
-  const setName = useUserSetName();
-  const setMbti = useUserSetMbti();
-  const addTodo = useUserAddTodo();
+  const { setName, setMbti, addTodo } = useUserAction();
 
   const [todoKey, setTodoKey] = useState("");
   const [todoName, setTodoName] = useState("");

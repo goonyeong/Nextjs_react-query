@@ -28,7 +28,7 @@ interface IAction {
   addTodo: (key: string, newTodo: TTodo) => void;
 }
 
-export const useUserStore = create<TState & IAction>()(
+export const useUserStore = create<TState & { actions: IAction }>()(
   devtools((set) => ({
     name: "??",
     age: 0,
@@ -42,24 +42,26 @@ export const useUserStore = create<TState & IAction>()(
       },
     },
     todo: {},
-    setName: (newName: string) =>
-      set(
-        produce((state: TState) => {
-          state.name = newName;
-        })
-      ),
-    setMbti: (newMbti: string) =>
-      set(
-        produce((state: TState) => {
-          state.mbti.name = newMbti;
-        })
-      ),
-    addTodo: (key: string, newTodo: TTodo) =>
-      set(
-        produce((state: TState) => {
-          state.todo[key] = newTodo;
-        })
-      ),
+    actions: {
+      setName: (newName: string) =>
+        set(
+          produce((state: TState) => {
+            state.name = newName;
+          })
+        ),
+      setMbti: (newMbti: string) =>
+        set(
+          produce((state: TState) => {
+            state.mbti.name = newMbti;
+          })
+        ),
+      addTodo: (key: string, newTodo: TTodo) =>
+        set(
+          produce((state: TState) => {
+            state.todo[key] = newTodo;
+          })
+        ),
+    },
   }))
 );
 
@@ -68,6 +70,4 @@ export const useUserName = () => useUserStore((state) => state.name);
 export const useUserAge = () => useUserStore((state) => state.age);
 export const useUserMbti = () => useUserStore((state) => state.mbti);
 export const useUserTodo = () => useUserStore((state) => state.todo);
-export const useUserSetName = () => useUserStore((state) => state.setName);
-export const useUserSetMbti = () => useUserStore((state) => state.setMbti);
-export const useUserAddTodo = () => useUserStore((state) => state.addTodo);
+export const useUserAction = () => useUserStore((state) => state.actions);

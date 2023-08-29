@@ -6,6 +6,8 @@ import { StyledThemeProvider } from "@/lib/styledThemeProvider";
 import { GlobalStyles } from "@/style/globalStyles";
 import { dir } from "i18next";
 import { languages } from "../i18n/settings";
+import { InitStore } from "@/lib/initStore";
+import { TLng } from "@/types/constants";
 
 export async function generateStaticParams() {
   return languages.map((lng) => ({ lng }));
@@ -13,7 +15,7 @@ export async function generateStaticParams() {
 
 interface IProps extends ILayoutProps {
   params: {
-    lng: string;
+    lng: TLng;
   };
 }
 
@@ -22,13 +24,15 @@ export default function RootLayout({ children, params: { lng } }: IProps) {
     <html lang={lng} dir={dir(lng)}>
       <body>
         <StyledComponentsRegistry>
-          <StyledThemeProvider>
-            <ReactQueryProvider>
-              <GlobalStyles />
-              <Header lng={lng} />
-              {children}
-            </ReactQueryProvider>
-          </StyledThemeProvider>
+          <InitStore lng={lng}>
+            <StyledThemeProvider>
+              <ReactQueryProvider>
+                <GlobalStyles />
+                <Header lng={lng} />
+                {children}
+              </ReactQueryProvider>
+            </StyledThemeProvider>
+          </InitStore>
         </StyledComponentsRegistry>
       </body>
     </html>
