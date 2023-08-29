@@ -2,7 +2,7 @@
 
 import { createGlobalStyle } from "styled-components";
 import reset from "styled-reset";
-import "./fonts.css";
+import "./fonts/fonts.css";
 
 export const GlobalStyles = createGlobalStyle`
   ${reset}
@@ -12,12 +12,17 @@ export const GlobalStyles = createGlobalStyle`
         color: inherit;
     }
   body{
-    font-family: "FontTest";
+    font-family: "fontTest";
+    color: ${({ theme }) => theme.color.fg};
   }
   input, textarea, select, button {
         outline: none;
         font-size: inherit;
         font-family: inherit;
+        border: 0;
+        padding-block: 0;
+        padding-inline: 0;
+        background-color: transparent;
      }
     input:focus, textarea:focus, select:focus {
         outline: none;
