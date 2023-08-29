@@ -1,4 +1,4 @@
-import { TMBD_API_KEY, TMBD_API_URL } from "@/config";
+import { TMBD_API_KEY, TMBD_API_URL } from "@/types/constants";
 import axios from "axios";
 
 export const getMovieList = async ({ page }: { page: number }) => {

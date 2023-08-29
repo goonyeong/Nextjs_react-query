@@ -8,11 +8,10 @@ import styled from "styled-components";
 interface IPageProps {
   params: {
     id: number;
-    lng: string;
   };
 }
 
-const Page = ({ params: { id, lng } }: IPageProps) => {
+const Page = ({ params: { id } }: IPageProps) => {
   const { data } = useCustomQuery<IPersonData>({
     queryKey: [...QK_Person_Detail, id.toString()],
     queryFn: () => getPersonDetail({ id: id }),

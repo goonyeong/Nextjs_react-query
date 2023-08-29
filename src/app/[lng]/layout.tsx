@@ -8,6 +8,7 @@ import { dir } from "i18next";
 import { languages } from "../i18n/settings";
 import { InitStore } from "@/lib/initStore";
 import { TLng } from "@/types/constants";
+import { Suspense } from "react";
 
 export async function generateStaticParams() {
   return languages.map((lng) => ({ lng }));
@@ -28,7 +29,7 @@ export default function RootLayout({ children, params: { lng } }: IProps) {
             <StyledThemeProvider>
               <ReactQueryProvider>
                 <GlobalStyles />
-                <Header lng={lng} />
+                <Header />
                 {children}
               </ReactQueryProvider>
             </StyledThemeProvider>

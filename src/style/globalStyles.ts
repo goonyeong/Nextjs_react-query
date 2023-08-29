@@ -14,6 +14,7 @@ export const GlobalStyles = createGlobalStyle`
   body{
     font-family: "fontTest";
     color: ${({ theme }) => theme.color.fg};
+    background-color: ${({ theme }) => theme.color.surface};;
   }
   input, textarea, select, button {
         outline: none;

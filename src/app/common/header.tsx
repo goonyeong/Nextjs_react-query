@@ -1,90 +1,63 @@
 "use client";
 
-import {
-  useUserName,
-  useUserAge,
-  useUserMbti,
-  useUserTodo,
-  useUserAction,
-} from "@/store/useUserStore";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
 import styled from "styled-components";
 import { useTranslation } from "../i18n/client";
-import { TLng } from "@/types/constants";
+import { useCustomRouter } from "@/hooks/useCustomRouter";
+import { Button } from "./button";
+import { useThemeAction, useThemeCurrent } from "@/store/useThemeStore";
+import { E_THEME } from "@/types/constants";
 
-interface IProps {
-  lng: TLng;
-}
+export const Header = () => {
+  const { t } = useTranslation(["common"]);
+  const currentTheme = useThemeCurrent();
+  const { setTheme } = useThemeAction();
 
-export const Header = ({ lng }: IProps) => {
-  const { t } = useTranslation(lng, ["common"]);
-
-  const { push } = useRouter();
-  const name = useUserName();
-  const mbti = useUserMbti();
-  const todo = useUserTodo();
-  const { setName, setMbti, addTodo } = useUserAction();
-
-  const [todoKey, setTodoKey] = useState("");
-  const [todoName, setTodoName] = useState("");
+  const { push } = useCustomRouter();
 
   return (
     <Wrapper>
-      <div
-        className="menu"
-        onClick={() => {
-          push(`/${lng}`);
-        }}
-      >
-        {t("menu1")}
-      </div>
-      <div
-        className="menu"
-        onClick={() => {
-          push(`/${lng}/getQueries`);
-        }}
-      >
-        {t("menu2")}
-      </div>
-      <div className="items">
-        <input
-          type="text"
-          value={name}
-          onChange={(e) => {
-            if (e.currentTarget.value) setName(e.currentTarget.value);
-          }}
-        />
-        name:: {name} /
-      </div>
-      <div className="items">
-        <input type="text" value={mbti.name} onChange={(e) => setMbti(e.currentTarget.value)} />
-        mbti:: {mbti.name}
-      </div>
-      <div className="items">
-        <input
-          type="text"
-          value={todoKey}
-          onChange={(e) => setTodoKey(e.currentTarget.value)}
-          placeholder="todo Key"
-        />
-        <input
-          type="text"
-          value={todoName}
-          onChange={(e) => setTodoName(e.currentTarget.value)}
-          placeholder="todo Name"
-        />
-        <button
+      <div className="flexLeft">
+        <div
+          className="menu"
           onClick={() => {
-            addTodo(todoKey, {
-              id: Math.random(),
-              name: todoName,
-            });
+            push(`/`);
           }}
         >
-          add
-        </button>
-        todo:: {JSON.stringify(todo)}
+          {/* {t("menu1")} */}
+        </div>
+        <div
+          className="menu"
+          onClick={() => {
+            push(`/getQueries`);
+          }}
+        >
+          {/* {t("menu2")} */}
+        </div>
+        <div
+          className="menu"
+          onClick={() => {
+            push(`/coms`);
+          }}
+        >
+          Components
+        </div>
+      </div>
+      <div className="flexRight">
+        <div className="btnContainer">
+          <Button
+            label="Theme Change"
+            color="quaternary"
+            fontSize="16px"
+            onClick={() => {
+              if (currentTheme === E_THEME.dark) {
+                setTheme(E_THEME.light);
+              } else {
+                setTheme(E_THEME.dark);
+              }
+            }}
+            isWidthAuto
+          />
+        </div>
       </div>
     </Wrapper>
   );
@@ -96,20 +69,26 @@ const Wrapper = styled.header`
   position: sticky;
   top: 0;
   left: 0;
-  background-color: beige;
-  padding: 10px 30px;
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  .items {
-    color: ${({ theme }) => theme.color.fg_accent_blue};
+  background-color: ${({ theme }) => theme.color.bg_accent_blue_subtle};
+  ${({ theme }) => theme.layout.flex_vertical_center};
+  justify-content: space-between;
+  padding: 0 30px;
+  > .flexLeft {
+    ${({ theme }) => theme.layout.flex_vertical_center};
+    .menu {
+      height: 30px;
+      ${({ theme }) => theme.layout.flex_center};
+      padding: 0 15px;
+      cursor: pointer;
+      color: ${({ theme }) => theme.color.fg};
+      &:hover {
+        color: ${({ theme }) => theme.color.fg_subtlest};
+      }
+    }
   }
-  .menu {
-    height: 100%;
-    padding: 0 10px;
-    cursor: pointer;
-    &:hover {
-      opacity: 0.5;
+  > .flexRight {
+    > .btnContainer {
+      height: 30px;
     }
   }
 `;

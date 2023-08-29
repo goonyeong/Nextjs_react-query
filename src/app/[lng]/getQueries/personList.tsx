@@ -4,15 +4,11 @@ import { useCustomQueries } from "@/query/useCustomQuery";
 import { getPersonDetail } from "@/services/api";
 import { IPersonData } from "@/types/interfaceData";
 import { QK_Person_Detail } from "@/query/queryKey";
-import { useRouter } from "next/navigation";
 import styled from "styled-components";
+import { useCustomRouter } from "@/hooks/useCustomRouter";
 
-interface IProps {
-  lng: string;
-}
-
-export const PersonList = ({ lng }: IProps) => {
-  const { push } = useRouter();
+export const PersonList = () => {
+  const { push } = useCustomRouter();
 
   const PERSON_ID = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
@@ -36,7 +32,7 @@ export const PersonList = ({ lng }: IProps) => {
               className="li"
               key={personData.id}
               onClick={() => {
-                push(`/${lng}/getQueries/${personData.id}`);
+                push(`/getQueries/${personData.id}`);
               }}
             >
               {personData.name}

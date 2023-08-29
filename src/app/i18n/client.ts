@@ -12,6 +12,7 @@ import {
 import resourcesToBackend from "i18next-resources-to-backend";
 import LanguageDetector from "i18next-browser-languagedetector";
 import { getOptions, languages } from "./settings";
+import { useLngCurrent } from "@/store/useLngStore";
 
 const runsOnServerSide = typeof window === "undefined";
 // on client side the normal singleton is ok
@@ -36,11 +37,14 @@ export function useTranslation<
   Ns extends Namespace,
   KPrefix extends KeyPrefix<FallbackNs<Ns>> = undefined
 >(
-  lng: string,
   ns?: Ns,
   options?: UseTranslationOptions<KPrefix>
 ): UseTranslationResponse<FallbackNs<Ns>, KPrefix> {
   const ret = useTranslationOrg(ns, options);
+
+  /** lng from store */
+  const lng = useLngCurrent();
+
   const { i18n } = ret;
   if (runsOnServerSide && lng && i18n.resolvedLanguage !== lng) {
     i18n.changeLanguage(lng);

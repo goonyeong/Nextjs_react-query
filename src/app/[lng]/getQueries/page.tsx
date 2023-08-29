@@ -1,13 +1,7 @@
 "use client";
 import styled from "styled-components";
 
-interface IProps {
-  params: {
-    lng: string;
-  };
-}
-
-export default function GetQueries({ params: { lng } }: IProps) {
+export default function GetQueries() {
   return <Main>No Select</Main>;
 }
 
