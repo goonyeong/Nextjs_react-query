@@ -1,7 +1,12 @@
 // React & Next
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import type { AppProps } from "next/app";
-import { Hydrate, QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import {
+  Hydrate,
+  QueryClient,
+  QueryClientProvider,
+  type DehydratedState,
+} from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 // Style
 import { ThemeProvider } from "styled-components";
@@ -21,18 +26,21 @@ import {
 import Layout from "components/layout/layout";
 import Seo from "components/seo";
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps }: AppProps<{ dehydratedState: DehydratedState }>) {
   const { themeStore } = useStore();
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: {
-        retry: 0,
-        staleTime: 1000 * 2,
-        cacheTime: 1000 * 60 * 1,
-        useErrorBoundary: true,
-      },
-    },
-  });
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            retry: 0,
+            staleTime: 1000 * 2,
+            cacheTime: 1000 * 60 * 1,
+            useErrorBoundary: true,
+          },
+        },
+      })
+  );
 
   useEffect(() => {
     reHydrateLocalStorage([rootStore.themeStore]);
