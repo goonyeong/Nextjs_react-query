@@ -1,4 +1,5 @@
 import { TMBD_API_KEY, TMBD_API_URL } from "@/types/constants";
+import { IFrontendMember } from "@/types/interfaceData";
 import axios from "axios";
 
 export const getMovieList = async ({ page }: { page: number }) => {
@@ -34,5 +35,24 @@ export const getPersonDetail = async ({ id }: { id: number }) => {
       page: id,
     },
   });
+  return result.data;
+};
+
+export const getFrontendMembers = async () => {
+  const result = await axios({
+    method: "get",
+    url: `/api/frontend/members`,
+  });
+
+  return result.data;
+};
+
+export const addFrontendMembers = async (member: IFrontendMember) => {
+  const result = await axios({
+    method: "post",
+    url: `/api/frontend/members`,
+    data: member,
+  });
+
   return result.data;
 };

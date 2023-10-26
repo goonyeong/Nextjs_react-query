@@ -13,3 +13,9 @@ export interface IPersonData {
   popularity: number;
   adult: boolean;
 }
+
+export interface IFrontendMember {
+  name: string;
+  age: number;
+  is아줌마: boolean;
+}

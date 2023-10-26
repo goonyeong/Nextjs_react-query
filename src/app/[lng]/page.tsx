@@ -13,7 +13,6 @@ interface IProps {
 const Home = async ({ params: { lng } }: IProps) => {
   /** server page useTranslation */
   const { t } = await useTranslation(lng, ["common"]);
-  console.log("server nexti18", t("menu1"));
 
   return (
     <>
@@ -22,6 +21,7 @@ const Home = async ({ params: { lng } }: IProps) => {
         queryKey={[...QK_Movie_Popular, "1"]}
         queryFn={() => getMovieList({ page: 1 })}
       >
+        {t("menu1")}
         <List />
       </ListPrefetchHydrateLayout>
     </>
