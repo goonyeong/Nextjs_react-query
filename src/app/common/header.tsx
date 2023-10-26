@@ -23,7 +23,7 @@ export const Header = () => {
             push(`/`);
           }}
         >
-          {t("menu1")}
+          {/* {t("menu1")} */}
         </div>
         <div
           className="menu"
@@ -31,7 +31,7 @@ export const Header = () => {
             push(`/getQueries`);
           }}
         >
-          {t("menu2")}
+          {/* {t("menu2")} */}
         </div>
         <div
           className="menu"
@@ -39,7 +39,15 @@ export const Header = () => {
             push(`/mutate`);
           }}
         >
-          {t("menu3")}
+          {/* {t("menu3")} */}
+        </div>
+        <div
+          className="menu"
+          onClick={() => {
+            push(`/mutate2`);
+          }}
+        >
+          {/* {t("menu4")} */}
         </div>
         <div
           className="menu"

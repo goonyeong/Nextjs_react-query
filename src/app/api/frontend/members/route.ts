@@ -6,21 +6,25 @@ const members: IFrontendMember[] = [
     name: "Asher",
     age: 29,
     is아줌마: false,
+    gender: "male",
   },
   {
     name: "Jayhock",
     age: 33,
     is아줌마: false,
+    gender: "male",
   },
   {
     name: "Blair",
     age: 32,
     is아줌마: true,
+    gender: "female",
   },
   {
     name: "Wisdom",
     age: 32,
     is아줌마: true,
+    gender: "female",
   },
 ];
 

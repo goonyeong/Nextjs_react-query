@@ -1,5 +1,6 @@
 {
   "menu1": "useCustomQuery",
   "menu2": "useCustomQueries",
-  "menu3": "mutate"
+  "menu3": "mutate",
+  "menu4": "mutate2"
 }

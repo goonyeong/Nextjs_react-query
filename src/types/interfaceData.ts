@@ -18,4 +18,5 @@ export interface IFrontendMember {
   name: string;
   age: number;
   is아줌마: boolean;
+  gender: "male" | "female";
 }

@@ -1,9 +1,9 @@
 "use client";
 import styled from "styled-components";
-import { Age } from "./age";
-import { Azoom } from "./azoom";
-import { Gender } from "./gender";
-import { Add } from "./add";
+import { Age } from "../mutate/age";
+import { Azoom } from "../mutate/azoom";
+import { Gender } from "../mutate/gender";
+import { Add } from "../mutate/add";
 
 export default function Mutate() {
   return (
@@ -12,7 +12,7 @@ export default function Mutate() {
       <Age />
       <Azoom />
       <Gender />
-      mutate1
+      mutate2
     </Main>
   );
 }

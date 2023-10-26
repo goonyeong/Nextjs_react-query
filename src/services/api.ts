@@ -39,11 +39,12 @@ export const getPersonDetail = async ({ id }: { id: number }) => {
 };
 
 export const getFrontendMembers = async () => {
+  console.log("fetch!!", new Date());
+
   const result = await axios({
     method: "get",
     url: `/api/frontend/members`,
   });
-
   return result.data;
 };
 
@@ -53,6 +54,5 @@ export const addFrontendMembers = async (member: IFrontendMember) => {
     url: `/api/frontend/members`,
     data: member,
   });
-
   return result.data;
 };
