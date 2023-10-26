@@ -29,7 +29,9 @@ export default function RootLayout({ children, params: { lng } }: IProps) {
             <StyledThemeProvider>
               <ReactQueryProvider>
                 <GlobalStyles />
-                <Header />
+                <Suspense>
+                  <Header />
+                </Suspense>
                 {children}
               </ReactQueryProvider>
             </StyledThemeProvider>
