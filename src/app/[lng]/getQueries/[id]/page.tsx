@@ -1,9 +1,6 @@
 "use client";
-import { useCustomQuery } from "@/query/useCustomQuery";
-import { getPersonDetail } from "@/services/api";
-import { IPersonData } from "@/types/interfaceData";
-import { QK_Person_Detail } from "@/query/queryKey";
 import styled from "styled-components";
+import { useGetPersonDetail } from "@/query/queries";
 
 interface IPageProps {
   params: {
@@ -12,10 +9,7 @@ interface IPageProps {
 }
 
 const Page = ({ params: { id } }: IPageProps) => {
-  const { data } = useCustomQuery<IPersonData>({
-    queryKey: [...QK_Person_Detail, id.toString()],
-    queryFn: () => getPersonDetail({ id: id }),
-  });
+  const { data } = useGetPersonDetail({ id });
 
   return (
     <Wrapper>

@@ -1,18 +1,8 @@
-import { QK_Frontend_Member } from "@/query/queryKey";
-import { useCustomQuery } from "@/query/useCustomQuery";
-import { getFrontendMembers } from "@/services/api";
-import { IFrontendMember } from "@/types/interfaceData";
+import { useGetFrontendMembers } from "@/query/queries";
 import styled from "styled-components";
 
 export const Age = () => {
-  const { data } = useCustomQuery<IFrontendMember[]>({
-    queryKey: [...QK_Frontend_Member],
-    queryFn: () => getFrontendMembers(),
-    options: {
-      staleTime: 2000,
-      cacheTime: 5000,
-    },
-  });
+  const { data } = useGetFrontendMembers();
 
   return (
     <Wrapper>

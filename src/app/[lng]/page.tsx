@@ -1,4 +1,4 @@
-import { ListPrefetchHydrateLayout } from "@/query/prefetchHydrateLayout";
+import { PrefetchHydrateLayout } from "@/query/prefetchHydrateLayout";
 import { List } from "./list";
 import { getMovieList, getPersonList } from "@/services/api";
 import { QK_Movie_Popular, QK_Person_Popular } from "@/query/queryKey";
@@ -17,16 +17,16 @@ const Home = async ({ params: { lng } }: IProps) => {
   return (
     <>
       {/* @ts-expect-error Server Component */}
-      <ListPrefetchHydrateLayout
-        queryKey={[
-          [...QK_Movie_Popular, "1"],
-          [...QK_Person_Popular, "1"],
+      <PrefetchHydrateLayout
+        queryKeys={[
+          [...QK_Movie_Popular, 1],
+          [...QK_Person_Popular, 1],
         ]}
-        queryFn={[() => getMovieList({ page: 1 }), () => getPersonList({ page: 1 })]}
+        queryFns={[() => getMovieList({ page: 1 }), () => getPersonList({ page: 1 })]}
       >
         {t("menu1")}
         <List />
-      </ListPrefetchHydrateLayout>
+      </PrefetchHydrateLayout>
     </>
   );
 };

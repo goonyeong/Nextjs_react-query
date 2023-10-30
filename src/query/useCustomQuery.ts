@@ -7,6 +7,8 @@ import {
 } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 
+/** 사용 안함 */
+
 export interface IuseCustomQueryProps<T> {
   queryKey: QueryKey;
   queryFn: () => Promise<any>;
@@ -23,7 +25,7 @@ export const useCustomQuery = <T>({
   queryFn,
   options,
 }: IuseCustomQueryProps<T>): UseQueryResult<T, AxiosError> =>
-  useQuery(queryKey, queryFn, options && options);
+  useQuery({ queryKey, queryFn, ...options });
 
 /** useQueries */
 export const useCustomQueries = <T>({ queries }: IuseCustomQueriesProps<T>) =>

@@ -1,11 +1,7 @@
 "use client";
-
-import { useCustomQueries } from "@/query/useCustomQuery";
-import { getPersonDetail } from "@/services/api";
-import { IPersonData } from "@/types/interfaceData";
-import { QK_Person_Detail } from "@/query/queryKey";
 import styled from "styled-components";
 import { useCustomRouter } from "@/hooks/useCustomRouter";
+import { useGetPersonDetails } from "@/query/queries";
 
 export const PersonList = () => {
   const { push } = useCustomRouter();
@@ -13,14 +9,9 @@ export const PersonList = () => {
   const PERSON_ID = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
   // 같은 api를 params만 변경하여 여러번 호출함
-  const res = useCustomQueries<IPersonData>({
-    queries: PERSON_ID.map((person) => {
-      return {
-        queryKey: [...QK_Person_Detail, person.toString()],
-        queryFn: () => getPersonDetail({ id: person }),
-      };
-    }),
-  });
+  const res = useGetPersonDetails({ personIdArr: PERSON_ID });
+
+  console.log(res);
 
   return (
     <List>

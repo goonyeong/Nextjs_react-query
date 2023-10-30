@@ -6,8 +6,7 @@ const getQueryClient = () =>
       queries: {
         retry: 0,
         staleTime: 0,
-        cacheTime: 0,
-        keepPreviousData: true,
+        gcTime: 0,
         refetchOnWindowFocus: false,
       },
     },

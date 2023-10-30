@@ -7,20 +7,18 @@ import styled from "styled-components";
 export const Add = () => {
   const queryClient = useQueryClient();
 
-  const { mutate } = useMutation(
-    () =>
+  const { mutate } = useMutation({
+    mutationFn: () =>
       addFrontendMembers({
         name: "Ken",
         age: 100,
         is아줌마: false,
         gender: "male",
       }),
-    {
-      onSuccess(result) {
-        queryClient.invalidateQueries([...QK_Frontend_Member]);
-      },
-    }
-  );
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [...QK_Frontend_Member] });
+    },
+  });
 
   return (
     <Wrapper>

@@ -1,24 +1,15 @@
 "use client";
-import { useCustomQuery } from "@/query/useCustomQuery";
-import { getMovieList, getPersonList } from "@/services/api";
-import { IMovieData, IPersonData } from "@/types/interfaceData";
-import { QK_Movie_Popular, QK_Person_Popular } from "@/query/queryKey";
 import { useState } from "react";
 import styled from "styled-components";
+import { useGetMovieList, useGetPersonList } from "@/query/queries";
 
 export const List = () => {
   const [moviePage, setMoviePage] = useState(1);
   const [personPage, setPersonPage] = useState(1);
 
-  const { data: movieData } = useCustomQuery<{ results: IMovieData[] }>({
-    queryKey: [...QK_Movie_Popular, moviePage.toString()],
-    queryFn: () => getMovieList({ page: moviePage }),
-  });
+  const { data: movieData } = useGetMovieList({ page: moviePage });
 
-  const { data: personData } = useCustomQuery<{ results: IPersonData[] }>({
-    queryKey: [...QK_Person_Popular, personPage.toString()],
-    queryFn: () => getPersonList({ page: personPage }),
-  });
+  const { data: personData } = useGetPersonList({ page: personPage });
 
   return (
     <Main>
